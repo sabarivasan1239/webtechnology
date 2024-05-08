@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Income Tax Calculator</title>
+    <div class="container calculator-container-FLUID" style="background-color: #00fbff;"></div>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            background-color: #00fbff;
+        }
+
+        .calculator-container {
+            padding: 20px;
+        }
+
+        .calculator-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .input-group-prepend-text {
+            min-width: 150px;
+        }
+
+        .result-input {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid calculator-container " style="background-color: rgba(0, 217, 255, 0.874);">
+        <h1 class="calculator-title">INCOME TAX CALCULATOR</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        BASIC INFO :
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="name">NAME :</label>
+                            <input type="text" class="form-control" id="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="pan">PAN NUMBER :</label>
+                            <input type="text" class="form-control" id="pan">
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-header">
+                        INCOME DETAILS :
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="salary">INCOME SALARY :</label>
+                            <input type="number" class="form-control" id="salary">
+                        </div>
+                        <div class="form-group">
+                            <label for="rent">INCOME FROM RENT :</label>
+                            <input type="number" class="form-control" id="rent">
+                        </div>
+                        <div class="form-group">
+                            <label for="otherIncomes">INCOME FROM OTHERS :</label>
+                            <input type="number" class="form-control" id="otherIncomes">
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-header">
+                        DEDUCTIONS :
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="insurance">INSURANCE :</label>
+                            <input type="number" class="form-control" id="insurance">
+                        </div>
+                        <div class="form-group">
+                            <label for="tuition">TUTION FEES :</label>
+                            <input type="number" class="form-control" id="tuition">
+                        </div>
+                        <div class="form-group">
+                            <label for="otherDeductions">OTHER DEDUCTIONS :</label>
+                            <input type="number" class="form-control" id="otherDeductions">
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button onclick="generateBill()" class="btn btn-primary btn-block">CLICK TO GENERATE</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        TAX INFO :
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="bill-name">NAME :</label>
+                            <input type="text" class="form-control result-input" id="bill-name" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="bill-pan">PAN NUMBER :</label>
+                            <input type="text" class="form-control result-input" id="bill-pan" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="bill-totalIncome">TOTAL INCOME :</label>
+                            <input type="text" class="form-control result-input" id="bill-totalIncome" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="bill-totalDeduction">TOTAL DEDUCTIONS :</label>
+                            <input type="text" class="form-control result-input" id="bill-totalDeduction" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="bill-taxableIncome">TAX TO PAY :</label>
+                            <input type="text" class="form-control result-input" id="bill-taxableIncome" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="bill-taxRate">TAX RATE</label>
+                            <input type="text" class="form-control result-input" id="bill-taxRate" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="bill-taxPayable">TAX PAYABLE </label>
+                            <input type="text" class="form-control result-input" id="bill-taxPayable" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateBill() {
+            let name = document.getElementById("name").value;
+            let pan = document.getElementById("pan").value;
+            let salary = Number(document.getElementById("salary").value) || 0;
+            let rent = Number(document.getElementById("rent").value) || 0;
+            let otherIncomes = Number(document.getElementById("otherIncomes").value) || 0;
+            let insurance = Number(document.getElementById("insurance").value) || 0;
+            let tuition = Number(document.getElementById("tuition").value) || 0;
+            let otherDeductions = Number(document.getElementById("otherDeductions").value) || 0;
+
+
+            document.getElementById("bill-name").value = name;
+            document.getElementById("bill-pan").value = pan;
+
+            let totalIncome = salary + rent + otherIncomes;
+            document.getElementById("bill-totalIncome").value = "₹ " + totalIncome;
+
+            let totalDeduction = insurance + tuition + otherDeductions;
+            if (totalDeduction > 150000) { totalDeduction = 150000; }
+            document.getElementById("bill-totalDeduction").value = "₹ " + totalDeduction;
+
+            let taxableIncome = totalIncome - totalDeduction;
+            document.getElementById("bill-taxableIncome").value = "₹ " + taxableIncome;
+
+            let taxRate = 0;
+
+            if (taxableIncome <= 25000) {
+                taxRate = 0;
+            } else if (taxableIncome <= 50000) {
+                taxRate = 0.05;
+            } else if (taxableIncome <= 100000) {
+                taxRate = 0.2;
+            } else {
+                taxRate = 0.3;
+            }
+            document.getElementById("bill-taxRate").value = "" + (taxRate * 100) + " %";
+
+            let taxPayable = taxableIncome * taxRate;
+            document.getElementById("bill-taxPayable").value = "₹ " + taxPayable.toFixed(2);
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
